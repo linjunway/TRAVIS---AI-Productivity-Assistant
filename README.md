@@ -15,11 +15,11 @@ Most AI projects rely entirely on expensive cloud APIs or slow local configurati
 
 ```mermaid
 graph TD
-    UI["Dual Client Interface\nOpen WebUI Dashboard / CLI Terminal"]
-    Gateway["FastAPI Enterprise Gateway\nRedis Checkpointer | Token Shield"]
-    Orchestrator["LangGraph Orchestration Layer\nPlanner ➔ Supervisor ➔ Self-Correction Loop"]
-    Local["Local Edge Layer\nOllama: Qwen-3 8B / 30B Coder\nCPU-Pinned Qdrant Vector DB"]
-    Cloud["Cloud API Layer\nNVIDIA NIM / OpenRouter\nAsync Circuit-Breaker System"]
+    UI["**Dual Client Interface**<br/>• Open WebUI Dashboard<br/>• CLI Terminal"]
+    Gateway["**FastAPI Enterprise Gateway**<br/>• Redis Checkpointer<br/>• Token Shield"]
+    Orchestrator["**LangGraph Orchestration Layer**<br/>• Planner<br/>• Supervisor<br/>• Self-Correction Loop"]
+    Local["**Local Edge Layer**<br/>• Ollama: Qwen-3 8B<br/>• Qwen-3 Coder 30B<br/>• CPU-Pinned Qdrant Vector DB"]
+    Cloud["**Cloud API Layer**<br/>• NVIDIA NIM<br/>• OpenRouter<br/>• Async Circuit-Breaker System"]
 
     UI --> Gateway
     Gateway --> Orchestrator
