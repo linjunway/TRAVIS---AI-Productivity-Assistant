@@ -1,9 +1,9 @@
 # TRAVIS: Hybrid AI Productivity Assistant & Autonomous Agent Platform
 
-[![Python Version](https://shields.io)](https://python.org)
-[![Framework](https://shields.io)](https://github.com)
-[![VectorDB](https://shields.io)](https://qdrant.tech)
-[![Inference](https://shields.io)](https://nvidia.com)
+![Python Version](https://shields.io)
+![Framework](https://shields.io)
+![VectorDB](https://shields.io)
+![Inference](https://shields.io)
 
 TRAVIS (**T**oken-Aware **R**outing and **A**gentic **V**irtual **I**nference **S**ystem) is a **hybrid AI agentic platform** engineered to optimize developer workloads dynamically across consumer edge hardware and enterprise cloud microservices. 
 
@@ -13,31 +13,20 @@ Most AI projects rely entirely on expensive cloud APIs or slow local configurati
 
 ## 🏗️ System Architecture & Design
 
-+------------------------------------------------+
-|              Dual Client Interface             |
-|     (Open WebUI Dashboard / Terminal CLI)      |
-+------------------------------------------------+
-|
-v
-+---------------------------------------+
-|       FastAPI Enterprise Gateway      |
-|  [Redis Checkpointer] [Token Shield]  |
-+---------------------------------------+
-|
-v
-+-------------------------------------------------------+
-|            LangGraph Orchestration Layer              |
-|  [Planner] -> [Supervisor] -> [Self-Correction Loop]  |
-+-------------------------------------------------------+
-/           
-(Low-Latency / Privacy Tasks)       (Complex Reasoning Tasks)
-/               
-v                 v
-+----------------------------------+   +----------------------------------+
-|        Local Edge Layer          |   |          Cloud API Layer         |
-|  Ollama (Qwen-3: 8B/30B Coder)   |   |    NVIDIA NIM / OpenRouter       |
-|   CPU-Pinned Qdrant Vector DB    |   |  Async Circuit-Breaker System    |
-+----------------------------------+   +----------------------------------+
+```mermaid
+graph TD
+    UI[Dual Client Interface<br>Open WebUI Dashboard / CLI Terminal] --> Gateway[FastAPI Enterprise Gateway<br>Redis Checkpointer | Token Shield]
+    Gateway --> Orchestrator[LangGraph Orchestration Layer<br>Planner ➔ Supervisor ➔ Self-Correction Loop]
+    
+    Orchestrator -->|Low-Latency / Privacy Tasks| Local[Local Edge Layer<br>Ollama: Qwen-3 8B / 30B Coder<br>CPU-Pinned Qdrant Vector DB]
+    Orchestrator -->|Complex Reasoning Tasks| Cloud[Cloud API Layer<br>NVIDIA NIM / OpenRouter<br>Async Circuit-Breaker System]
+
+    style UI fill:#2b2b2b,stroke:#4a4a4a,stroke-width:2px,color:#fff
+    style Gateway fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#fff
+    style Orchestrator fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#fff
+    style Local fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
+    style Cloud fill:#7c2d12,stroke:#f97316,stroke-width:2px,color:#fff
+```
 
 ---
 
