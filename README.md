@@ -1,9 +1,9 @@
 # TRAVIS: Hybrid AI Productivity Assistant & Autonomous Agent Platform
 
-![Python Version](https://shields.io)
-![Framework](https://shields.io)
-![VectorDB](https://shields.io)
-![Inference](https://shields.io)
+![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)
+![Framework](https://img.shields.io/badge/framework-LangGraph-6366f1)
+![VectorDB](https://img.shields.io/badge/vector--db-Qdrant-10b981)
+![Inference](https://img.shields.io/badge/inference-Ollama%20%7C%20NVIDIA%20NIM%20%7C%20OpenRouter-f97316)
 
 TRAVIS (**T**oken-Aware **R**outing and **A**gentic **V**irtual **I**nference **S**ystem) is a **hybrid AI agentic platform** engineered to optimize developer workloads dynamically across consumer edge hardware and enterprise cloud microservices. 
 
@@ -15,11 +15,16 @@ Most AI projects rely entirely on expensive cloud APIs or slow local configurati
 
 ```mermaid
 graph TD
-    UI[Dual Client Interface<br>Open WebUI Dashboard / CLI Terminal] --> Gateway[FastAPI Enterprise Gateway<br>Redis Checkpointer | Token Shield]
-    Gateway --> Orchestrator[LangGraph Orchestration Layer<br>Planner ➔ Supervisor ➔ Self-Correction Loop]
-    
-    Orchestrator -->|Low-Latency / Privacy Tasks| Local[Local Edge Layer<br>Ollama: Qwen-3 8B / 30B Coder<br>CPU-Pinned Qdrant Vector DB]
-    Orchestrator -->|Complex Reasoning Tasks| Cloud[Cloud API Layer<br>NVIDIA NIM / OpenRouter<br>Async Circuit-Breaker System]
+    UI["Dual Client Interface\nOpen WebUI Dashboard / CLI Terminal"]
+    Gateway["FastAPI Enterprise Gateway\nRedis Checkpointer | Token Shield"]
+    Orchestrator["LangGraph Orchestration Layer\nPlanner ➔ Supervisor ➔ Self-Correction Loop"]
+    Local["Local Edge Layer\nOllama: Qwen-3 8B / 30B Coder\nCPU-Pinned Qdrant Vector DB"]
+    Cloud["Cloud API Layer\nNVIDIA NIM / OpenRouter\nAsync Circuit-Breaker System"]
+
+    UI --> Gateway
+    Gateway --> Orchestrator
+    Orchestrator -->|Low-Latency / Privacy Tasks| Local
+    Orchestrator -->|Complex Reasoning Tasks| Cloud
 
     style UI fill:#2b2b2b,stroke:#4a4a4a,stroke-width:2px,color:#fff
     style Gateway fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#fff
