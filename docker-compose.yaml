@@ -1,0 +1,29 @@
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    volumes:
+      - ./docker/litellm_config.yaml:/app/config.yaml
+    env_file: .env
+    ports: ["4000:4000"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+
+  backend:
+    build: .
+    env_file: .env
+    environment:
+      LITELLM_BASE_URL: http://litellm:4000
+    ports: ["8000:8000"]
+    depends_on: [litellm]
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      OPENAI_API_BASE_URL: http://backend:8000/v1
+      OPENAI_API_KEY: dev-key
+    ports: ["3000:8080"]
+    volumes: [openwebui:/app/backend/data]
+    depends_on: [backend]
+
+volumes:
+  openwebui:

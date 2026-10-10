@@ -1,0 +1,57 @@
+# Revisit this file to add new models and update existing ones. The model_list section defines the available models and their parameters, while the router_settings section specifies how to handle retries, timeouts, and fallback options for each model.
+# Need to determine what models are available for free.
+
+model_list:
+  - model_name: local-fast
+    litellm_params:
+      model: ollama_chat/qwen3-4b-4k
+      api_base: http://host.docker.internal:11434
+
+  - model_name: local-code
+    litellm_params:
+      model: ollama_chat/qwen3-coder-8k
+      api_base: http://host.docker.internal:11434
+
+  - model_name: cloud-nim
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b
+      api_key: os.environ/NVIDIA_NIM_API_KEY
+
+# Powershell command to retrieve free models via Nvidia NIM
+# $key = (Get-Content .env | Select-String '^NVIDIA_NIM_API_KEY=').Line.Split('=',2)[1]
+# (Invoke-RestMethod https://integrate.api.nvidia.com/v1/models -Headers @{Authorization="Bearer $key"}).data |
+#    Select-Object id | Sort-Object id
+
+  - model_name: cloud-openrouter
+    litellm_params:
+      model: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+# Powershell command to retrieve free models via OpenRouter API
+# $m = (Invoke-RestMethod https://openrouter.ai/api/v1/models).data
+# $m | Where-Object {
+#    $_.pricing.prompt -eq "0" -and $_.pricing.completion -eq "0" -and
+#    $_.supported_parameters -contains "tools"
+# } | Select-Object id, context_length | Sort-Object id | Format-Table -AutoSize
+
+  - model_name: cloud-review
+    litellm_params:
+      model: openrouter/google/gemma-4-31b-it:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  - model_name: cloud-deepseek
+    litellm_params:
+      model: deepseek-v4-pro
+      api_key: os.environ/DEEPSEEK_API_KEY
+
+# Powershell command to retrieve free models via DeepSeek API
+# $dk = (Get-Content .env | Select-String '^DEEPSEEK_API_KEY=').Line.Split('=',2)[1]
+# (Invoke-RestMethod https://api.deepseek.com/models -Headers @{Authorization="Bearer $dk"}).data | Select-Object id
+
+router_settings:
+  num_retries: 1
+  timeout: 180
+  fallbacks:
+    - cloud-nim: ["cloud-openrouter", "local-fast"]
+    - cloud-openrouter: ["local-fast"]
+    - local-code: ["cloud-nim", "local-fast"]
